@@ -1,12 +1,16 @@
 package com.example.coviderttracking
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.annotation.ColorInt
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
 import com.robinhood.spark.SparkView
@@ -22,6 +26,9 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    var pos : RadioButton? = null
+    var neg : RadioButton? = null
+    var death : RadioButton? = null
 
     private lateinit var currentShowData: List<CovidData>
     private lateinit var perStatesDailyData: Map<String, List<CovidData>>
@@ -43,6 +50,10 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
         val covidServer = retrofit.create(CovidServer::class.java)
+
+        pos = findViewById<RadioButton>(R.id.btnPostive)
+        neg = findViewById<RadioButton>(R.id.btnNegtaive)
+        death = findViewById<RadioButton>(R.id.btnDeath)
 
 
         covidServer.getNationalData().enqueue(object: Callback<List<CovidData>> {
@@ -100,6 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setupEventListern() {
         spark_view.isScrubEnabled = true
         spark_view.setScrubListener { itemData ->
@@ -125,14 +137,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun updateDispalyWithMetric(data: Metric) {
+        /*when(data){
+            Metric.NEGATIVE -> {neg?.setBackgroundColor(getColor(R.color.Tab))
+                                    pos?.setBackgroundColor(getColor(R.color.white))
+                                    death?.setBackgroundColor(getColor(R.color.white)) }
+
+            Metric.POSITIVE ->  {neg?.setBackgroundColor(getColor(R.color.white))
+                                    pos?.setBackgroundColor(getColor(R.color.Tab))
+                                    death?.setBackgroundColor(getColor(R.color.white))}
+
+            Metric.DEATH -> {neg?.setBackgroundColor(getColor(R.color.white))
+                                pos?.setBackgroundColor(getColor(R.color.white))
+                                death?.setBackgroundColor(getColor(R.color.Tab))}
+        }*/
         val color = when(data){
             Metric.NEGATIVE -> R.color.negetive
             Metric.POSITIVE -> R.color.positive
             Metric.DEATH -> R.color.death
         }
-        spark_view.lineColor = color
-        tvMetricLabel.setTextColor(color)
+        spark_view.lineColor = getColor(color)
+        tvMetricLabel.setTextColor(getColor(color))
 
 
         adapter?.metric = data

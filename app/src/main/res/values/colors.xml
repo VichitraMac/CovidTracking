@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="negetive">#1BB121</color>
-    <color name="positive">#FFC107</color>
-    <color name="death">#E10F0F</color>
+    <color name="negetive">#00FF0A</color>
+    <color name="positive">#FDBE00</color>
+    <color name="death">#FF0000</color>
+    <color name="Tab">#C8BF77</color>
 </resources>
